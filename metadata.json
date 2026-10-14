@@ -1,0 +1,6 @@
+{
+  "name": "BharatBazaar",
+  "description": "Complete Flipkart-style Indian e-commerce shopping app with category exploration, deals of the day, instant PIN code delivery check, rich cart & wishlist, order tracking, and admin dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
