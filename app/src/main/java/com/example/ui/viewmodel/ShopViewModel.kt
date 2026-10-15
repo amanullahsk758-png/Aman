@@ -2,12 +2,16 @@ package com.example.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.localization.AppLanguage
+import com.example.data.localization.Translations
 import com.example.data.model.Address
 import com.example.data.model.CartItemWithProduct
+import com.example.data.model.CatalogItem
 import com.example.data.model.Category
 import com.example.data.model.OrderWithItems
 import com.example.data.model.Product
 import com.example.data.model.Review
+import com.example.data.model.Seller
 import com.example.data.model.WishlistItemWithProduct
 import com.example.data.repository.BharatBazaarRepository
 import com.example.data.repository.PincodeCheckResult
@@ -21,6 +25,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+enum class UserRole {
+    CUSTOMER,
+    SELLER,
+    ADMIN
+}
 
 enum class SortOption(val label: String) {
     RELEVANCE("Relevance"),
@@ -41,11 +51,45 @@ sealed class Screen {
     data class OrderTracking(val orderId: String) : Screen()
     object Account : Screen()
     object AdminDashboard : Screen()
+    object SellerDashboard : Screen()
+    object SellerRegistration : Screen()
+    data class CatalogSelection(val seller: Seller) : Screen()
+    data class CategoryProductForm(val catalogItem: CatalogItem?, val seller: Seller) : Screen()
 }
 
 class ShopViewModel(private val repository: BharatBazaarRepository) : ViewModel() {
 
-    // Current navigation state (MVVM stack)
+    // Multi-Language Support
+    private val _currentLanguage = MutableStateFlow(AppLanguage.ENGLISH)
+    val currentLanguage: StateFlow<AppLanguage> = _currentLanguage.asStateFlow()
+
+    fun setLanguage(language: AppLanguage) {
+        _currentLanguage.value = language
+        showToast("Language changed to ${language.nativeName}")
+    }
+
+    fun tr(key: String): String {
+        return Translations.get(key, _currentLanguage.value)
+    }
+
+    // Role-Based Access (Customer, Seller, Admin)
+    private val _userRole = MutableStateFlow(UserRole.CUSTOMER)
+    val userRole: StateFlow<UserRole> = _userRole.asStateFlow()
+
+    fun setUserRole(role: UserRole) {
+        _userRole.value = role
+    }
+
+    // Active Seller Profile (when acting as Seller)
+    private val _currentSeller = MutableStateFlow<Seller?>(null)
+    val currentSeller: StateFlow<Seller?> = _currentSeller.asStateFlow()
+
+    fun switchActiveSeller(seller: Seller) {
+        _currentSeller.value = seller
+        _userRole.value = UserRole.SELLER
+    }
+
+    // Navigation Stack
     private val _screenStack = MutableStateFlow<List<Screen>>(listOf(Screen.Home))
     val currentScreen: StateFlow<Screen> = _screenStack
         .combine(MutableStateFlow(Unit)) { stack, _ -> stack.lastOrNull() ?: Screen.Home }
@@ -118,6 +162,61 @@ class ShopViewModel(private val repository: BharatBazaarRepository) : ViewModel(
 
     val bestSellers: StateFlow<List<Product>> = repository.bestSellers
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    // Sellers
+    val allSellers: StateFlow<List<Seller>> = repository.allSellers
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun registerSeller(seller: Seller, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            repository.registerSeller(seller)
+            _currentSeller.value = seller
+            showToast("Seller registration submitted! Welcome to DKart Seller Hub.")
+            onComplete()
+        }
+    }
+
+    fun approveSeller(sellerId: String) {
+        viewModelScope.launch {
+            repository.updateSellerStatus(sellerId, "APPROVED")
+            showToast("Seller $sellerId approved successfully")
+        }
+    }
+
+    fun rejectSeller(sellerId: String) {
+        viewModelScope.launch {
+            repository.updateSellerStatus(sellerId, "REJECTED")
+            showToast("Seller $sellerId rejected")
+        }
+    }
+
+    fun suspendSeller(sellerId: String) {
+        viewModelScope.launch {
+            repository.updateSellerStatus(sellerId, "SUSPENDED")
+            showToast("Seller $sellerId suspended")
+        }
+    }
+
+    fun updateSellerCommission(sellerId: String, commission: Double) {
+        viewModelScope.launch {
+            repository.updateSellerCommission(sellerId, commission)
+            showToast("Commission rate updated to $commission%")
+        }
+    }
+
+    // Catalog Items
+    val catalogItems: StateFlow<List<CatalogItem>> = repository.allCatalogItems
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    fun createCatalogItem(item: CatalogItem, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            repository.createCatalogItem(item)
+            showToast("Catalog item '${item.title.take(20)}' created")
+            onComplete()
+        }
+    }
+
+    fun getSellerProducts(sellerId: String) = repository.getProductsBySeller(sellerId)
 
     // Cart
     val cartItems: StateFlow<List<CartItemWithProduct>> = repository.cartWithProducts
@@ -267,18 +366,22 @@ class ShopViewModel(private val repository: BharatBazaarRepository) : ViewModel(
         }
     }
 
-    // Admin Operations
+    // Product Listing & Inventory (with strictly max 6 images enforcement)
     fun saveProduct(product: Product) {
         viewModelScope.launch {
+            if (product.getAllImages().size > 6) {
+                showToast("Error: Maximum 6 images allowed per product listing!")
+                return@launch
+            }
             repository.saveProduct(product)
-            showToast("Product '${product.title.take(20)}' saved")
+            showToast("Product '${product.title.take(20)}' saved to DKart Marketplace")
         }
     }
 
     fun deleteProduct(product: Product) {
         viewModelScope.launch {
             repository.deleteProduct(product)
-            showToast("Product deleted")
+            showToast("Product removed")
         }
     }
 
@@ -297,7 +400,7 @@ class ShopViewModel(private val repository: BharatBazaarRepository) : ViewModel(
                 isVerified = true
             )
             repository.addReview(review)
-            showToast("Thank you for your rating & review!")
+            showToast("Thank you for reviewing on DKart!")
         }
     }
 }

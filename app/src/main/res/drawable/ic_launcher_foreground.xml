@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/ic_bharat_bazaar_icon_1791972549143"
+        android:drawable="@drawable/ic_dkart_logo_1792042126203"
         android:gravity="center" />
 </layer-list>

@@ -1,10 +1,11 @@
 package com.example.data.repository
 
-import com.example.data.local.BharatBazaarDatabase
+import com.example.data.local.DKartDatabase
 import com.example.data.local.InitialDataSeed
 import com.example.data.model.Address
 import com.example.data.model.CartItem
 import com.example.data.model.CartItemWithProduct
+import com.example.data.model.CatalogItem
 import com.example.data.model.Category
 import com.example.data.model.Coupon
 import com.example.data.model.OrderEntity
@@ -12,6 +13,7 @@ import com.example.data.model.OrderItemEntity
 import com.example.data.model.OrderWithItems
 import com.example.data.model.Product
 import com.example.data.model.Review
+import com.example.data.model.Seller
 import com.example.data.model.WishlistItem
 import com.example.data.model.WishlistItemWithProduct
 import kotlinx.coroutines.CoroutineScope
@@ -22,11 +24,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
-class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
+class BharatBazaarRepository(private val db: DKartDatabase) {
 
     private val productDao = db.productDao()
+    private val catalogDao = db.catalogDao()
+    private val sellerDao = db.sellerDao()
     private val categoryDao = db.categoryDao()
     private val cartDao = db.cartDao()
     private val wishlistDao = db.wishlistDao()
@@ -44,6 +47,12 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
     private suspend fun seedDatabaseIfEmpty() {
         if (categoryDao.getCategoryCount() == 0) {
             categoryDao.insertCategories(InitialDataSeed.categories)
+        }
+        if (sellerDao.getSellerCount() == 0) {
+            InitialDataSeed.defaultSellers.forEach { sellerDao.insertSeller(it) }
+        }
+        if (catalogDao.getCatalogCount() == 0) {
+            catalogDao.insertCatalogItems(InitialDataSeed.catalogItems)
         }
         if (productDao.getProductCount() == 0) {
             productDao.insertProducts(InitialDataSeed.products)
@@ -74,15 +83,50 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
     fun getProductById(id: String): Flow<Product?> =
         productDao.getProductById(id)
 
+    fun getProductsBySeller(sellerId: String): Flow<List<Product>> =
+        productDao.getProductsBySeller(sellerId)
+
     fun searchProducts(query: String): Flow<List<Product>> =
         productDao.searchProducts(query)
 
     suspend fun saveProduct(product: Product) {
-        productDao.insertProduct(product)
+        // Enforce maximum 6 images rule
+        val validatedImages = product.getAllImages().take(6)
+        val primary = validatedImages.firstOrNull() ?: product.imageUrl
+        val additional = validatedImages.drop(1).joinToString("|")
+        val validatedProduct = product.copy(imageUrl = primary, additionalImages = additional)
+        productDao.insertProduct(validatedProduct)
     }
 
     suspend fun deleteProduct(product: Product) {
         productDao.deleteProduct(product)
+    }
+
+    // Sellers
+    val allSellers: Flow<List<Seller>> = sellerDao.getAllSellers()
+
+    fun getSellerById(id: String): Flow<Seller?> = sellerDao.getSellerById(id)
+
+    suspend fun registerSeller(seller: Seller) {
+        sellerDao.insertSeller(seller)
+    }
+
+    suspend fun updateSellerStatus(sellerId: String, status: String) {
+        sellerDao.updateSellerStatus(sellerId, status)
+    }
+
+    suspend fun updateSellerCommission(sellerId: String, commission: Double) {
+        sellerDao.updateSellerCommission(sellerId, commission)
+    }
+
+    // Catalog Items
+    val allCatalogItems: Flow<List<CatalogItem>> = catalogDao.getAllCatalogItems()
+
+    fun searchCatalog(query: String): Flow<List<CatalogItem>> =
+        catalogDao.searchCatalog(query)
+
+    suspend fun createCatalogItem(item: CatalogItem) {
+        catalogDao.insertCatalogItem(item)
     }
 
     // Cart
@@ -194,6 +238,9 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
 
     fun getOrderById(orderId: String): Flow<OrderWithItems?> = orderDao.getOrderById(orderId)
 
+    fun getOrderItemsForSeller(sellerId: String): Flow<List<OrderItemEntity>> =
+        orderDao.getOrderItemsForSeller(sellerId)
+
     suspend fun placeOrder(
         cartItems: List<CartItemWithProduct>,
         deliveryAddress: Address,
@@ -207,7 +254,7 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
 
         val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         val estimatedDeliveryDate = dateFormat.format(Date(System.currentTimeMillis() + (2 * 24 * 60 * 60 * 1000L)))
-        val orderId = "OD" + System.currentTimeMillis().toString().takeLast(8) + (10..99).random()
+        val orderId = "DK" + System.currentTimeMillis().toString().takeLast(8) + (10..99).random()
 
         val orderEntity = OrderEntity(
             orderId = orderId,
@@ -233,6 +280,8 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
             OrderItemEntity(
                 orderId = orderId,
                 productId = prod.id,
+                sellerId = prod.sellerId,
+                sellerName = prod.sellerName,
                 title = prod.title,
                 brand = prod.brand,
                 imageUrl = prod.imageUrl,
@@ -287,7 +336,7 @@ class BharatBazaarRepository(private val db: BharatBazaarDatabase) {
             pincode = clean,
             deliveryDays = if (clean.startsWith("40") || clean.startsWith("11") || clean.startsWith("56")) 1 else 2,
             codAvailable = true,
-            message = "Delivery available to $city ($clean) in 1-2 days. Cash on Delivery eligible."
+            message = "DKart Fast Delivery to $city ($clean) in 1-2 days. Cash on Delivery eligible."
         )
     }
 }

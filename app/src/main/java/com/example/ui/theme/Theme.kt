@@ -8,15 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val LightColorScheme = lightColorScheme(
-    primary = FlipkartBlue,
+    primary = DKartBlue,
     onPrimary = Color.White,
-    primaryContainer = FlipkartLightBlue,
-    onPrimaryContainer = FlipkartDarkBlue,
-    secondary = FlipkartOrange,
-    onSecondary = Color.White,
-    secondaryContainer = Color(0xFFFFE0B2),
-    onSecondaryContainer = Color(0xFFE65100),
-    tertiary = FlipkartGreen,
+    primaryContainer = DKartLightBlue,
+    onPrimaryContainer = DKartDarkBlue,
+    secondary = DKartYellow,
+    onSecondary = DKartDeepNavy,
+    secondaryContainer = Color(0xFFFFF9C4),
+    onSecondaryContainer = Color(0xFFF57F17),
+    tertiary = DKartGreen,
     onTertiary = Color.White,
     background = BackgroundNeutral,
     onBackground = TextPrimary,
@@ -28,12 +28,12 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = FlipkartBlue,
+    primary = DKartBlue,
     onPrimary = Color.White,
-    primaryContainer = FlipkartDarkBlue,
-    onPrimaryContainer = FlipkartLightBlue,
-    secondary = FlipkartOrange,
-    onSecondary = Color.White,
+    primaryContainer = DKartDarkBlue,
+    onPrimaryContainer = DKartLightBlue,
+    secondary = DKartYellow,
+    onSecondary = DKartDeepNavy,
     background = Color(0xFF121212),
     onBackground = Color(0xFFEEEEEE),
     surface = Color(0xFF1E1E1E),
@@ -44,7 +44,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun BharatBazaarTheme(
+fun DKartTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -57,10 +57,16 @@ fun BharatBazaarTheme(
     )
 }
 
-// Backward compatibility alias
+// Backward compatibility aliases
+@Composable
+fun BharatBazaarTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) = DKartTheme(darkTheme = darkTheme, content = content)
+
 @Composable
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
-) = BharatBazaarTheme(darkTheme = darkTheme, content = content)
+) = DKartTheme(darkTheme = darkTheme, content = content)

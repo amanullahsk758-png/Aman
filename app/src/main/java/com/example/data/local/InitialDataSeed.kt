@@ -1,10 +1,12 @@
 package com.example.data.local
 
 import com.example.data.model.Address
+import com.example.data.model.CatalogItem
 import com.example.data.model.Category
 import com.example.data.model.Coupon
 import com.example.data.model.Product
 import com.example.data.model.Review
+import com.example.data.model.Seller
 
 object InitialDataSeed {
 
@@ -21,10 +23,177 @@ object InitialDataSeed {
         Category("footwear", "Footwear", "roller_skating", "Buy 1 Get 1", 10)
     )
 
+    val defaultSellers = listOf(
+        Seller(
+            id = "seller_dkart_direct",
+            fullName = "DKart Marketplace Retail Pvt Ltd",
+            businessName = "DKart Retail Official",
+            displayName = "DKart Official Store",
+            email = "retail@dkart.in",
+            phone = "+91 98765 00001",
+            pickupAddress = "DKart Fulfillment Center, Bhiwandi, Maharashtra - 421302",
+            bankAccountNumber = "919876543210",
+            bankIfsc = "HDFC0001234",
+            gstin = "27AABCT3518Q1ZV",
+            pan = "AABCT3518Q",
+            status = "APPROVED",
+            rating = 4.9f,
+            totalOrders = 3420,
+            commissionPercent = 8.0
+        ),
+        Seller(
+            id = "seller_indi_flash",
+            fullName = "Rajesh Gupta",
+            businessName = "IndiFlash Electronics Hub",
+            displayName = "IndiFlash Tech",
+            email = "rajesh@indiflash.in",
+            phone = "+91 98200 12345",
+            pickupAddress = "Plot 42, Okhla Phase III, New Delhi - 110020",
+            bankAccountNumber = "501002938475",
+            bankIfsc = "ICIC0000042",
+            gstin = "07AAACI1234K1Z5",
+            pan = "AAACI1234K",
+            status = "APPROVED",
+            rating = 4.7f,
+            totalOrders = 1250,
+            commissionPercent = 10.0
+        ),
+        Seller(
+            id = "seller_saree_kendra",
+            fullName = "Manish Patel",
+            businessName = "Saree Kendra Surat",
+            displayName = "Surat Silk Emporium",
+            email = "manish@sareekendra.com",
+            phone = "+91 98250 54321",
+            pickupAddress = "Ring Road Textile Market, Surat, Gujarat - 395002",
+            bankAccountNumber = "321098765432",
+            bankIfsc = "SBIN0004567",
+            gstin = "24AAACS9876P1ZR",
+            pan = "AAACS9876P",
+            status = "APPROVED",
+            rating = 4.6f,
+            totalOrders = 890,
+            commissionPercent = 12.0
+        ),
+        Seller(
+            id = "seller_pending_01",
+            fullName = "Vikram Aditya",
+            businessName = "Modern Trends Apparel",
+            displayName = "Modern Trends",
+            email = "vikram@moderntrends.in",
+            phone = "+91 98111 22334",
+            pickupAddress = "Sector 18, Noida, Uttar Pradesh - 201301",
+            bankAccountNumber = "1029384756",
+            bankIfsc = "KKBK0000123",
+            gstin = "09AABCM1122D1Z9",
+            pan = "AABCM1122D",
+            status = "PENDING",
+            rating = 4.0f,
+            totalOrders = 0,
+            commissionPercent = 10.0
+        )
+    )
+
+    val catalogItems = listOf(
+        CatalogItem(
+            id = "CAT_MOB_S24U",
+            title = "Samsung Galaxy S24 Ultra 5G (AI Smartphone)",
+            brand = "Samsung",
+            modelNumber = "SM-S928B/DS",
+            gtin = "8806095301824",
+            categoryId = "mobiles",
+            subCategory = "Flagship Smartphones",
+            imageUrl = "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 134999.0,
+            description = "Snapdragon 8 Gen 3 for Galaxy, 200MP Quad Tele camera, built-in S Pen, and Titanium frame.",
+            standardHighlights = "12GB RAM | 256GB ROM;6.8 inch Quad HD+ Dynamic AMOLED;200MP Camera;5000 mAh Battery",
+            standardSizes = "256GB,512GB,1TB",
+            standardColors = "Titanium Gray,Titanium Black,Titanium Violet"
+        ),
+        CatalogItem(
+            id = "CAT_MOB_IP15",
+            title = "Apple iPhone 15 (Dynamic Island & USB-C)",
+            brand = "Apple",
+            modelNumber = "A3090",
+            gtin = "195949038294",
+            categoryId = "mobiles",
+            subCategory = "Smartphones",
+            imageUrl = "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 79900.0,
+            description = "Dynamic Island, 48MP Main camera with 2x Telephoto, color-infused glass, and USB-C.",
+            standardHighlights = "128GB ROM;6.1 inch Super Retina XDR;48MP + 12MP Camera;A16 Bionic Chip",
+            standardSizes = "128GB,256GB,512GB",
+            standardColors = "Blue,Pink,Black,Green,Yellow"
+        ),
+        CatalogItem(
+            id = "CAT_ELEC_WH1000",
+            title = "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+            brand = "Sony",
+            modelNumber = "WH1000XM5/B",
+            gtin = "4548736132573",
+            categoryId = "electronics",
+            subCategory = "Audio",
+            imageUrl = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 34990.0,
+            description = "Industry-leading noise cancellation with 8 microphones, 30 hours battery life, and LDAC.",
+            standardHighlights = "Industry Leading ANC;30 Hours Battery Life;Multipoint Bluetooth;Touch sensor controls",
+            standardSizes = "Standard",
+            standardColors = "Silver,Black,Midnight Blue"
+        ),
+        CatalogItem(
+            id = "CAT_FASH_SHIRT",
+            title = "Peter England Men's Slim Fit 100% Cotton Formal Shirt",
+            brand = "Peter England",
+            modelNumber = "PESF-COT-01",
+            gtin = "8905260192841",
+            categoryId = "fashion_men",
+            subCategory = "Shirts",
+            imageUrl = "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 1999.0,
+            description = "100% premium breathable cotton, wrinkle resistant formal shirt for office and occasions.",
+            standardHighlights = "100% Breathable Cotton;Full Sleeve with spread collar;Machine wash friendly",
+            standardSizes = "38 (S),40 (M),42 (L),44 (XL)",
+            standardColors = "Sky Blue,Crisp White,Soft Pink,Navy Blue"
+        ),
+        CatalogItem(
+            id = "CAT_FASH_SAREE",
+            title = "Siril Kanjivaram Woven Pure Soft Silk Saree with Blouse Piece",
+            brand = "Siril",
+            modelNumber = "SRL-KNJ-22",
+            gtin = "8907382910481",
+            categoryId = "fashion_women",
+            subCategory = "Sarees",
+            imageUrl = "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 4999.0,
+            description = "Kanjivaram style woven jacquard border silk saree with unstitched matching blouse piece.",
+            standardHighlights = "Kanjivaram Art Silk;Rich Zari Woven Pallu;Saree: 5.5m | Blouse: 0.8m",
+            standardSizes = "Free Size",
+            standardColors = "Peacock Blue & Gold,Ruby Red,Emerald Green"
+        ),
+        CatalogItem(
+            id = "CAT_FOOT_PUMA",
+            title = "Puma Men's Softride Pro Lightweight Running Shoes",
+            brand = "Puma",
+            modelNumber = "PUM-SOFTRIDE-99",
+            gtin = "4064536281924",
+            categoryId = "footwear",
+            subCategory = "Sports Shoes",
+            imageUrl = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
+            standardMrp = 4999.0,
+            description = "Engineered with Puma Softride foam cushioning technology for all-day running comfort.",
+            standardHighlights = "Softride foam cushioning;Zoned rubber traction outsole;Breathable knit mesh upper",
+            standardSizes = "UK 7,UK 8,UK 9,UK 10,UK 11",
+            standardColors = "Black & White,Electric Blue,Triple Black"
+        )
+    )
+
     val products = listOf(
         // Mobiles
         Product(
             id = "prod_mob_01",
+            catalogId = "CAT_MOB_S24U",
+            sellerId = "seller_indi_flash",
+            sellerName = "IndiFlash Electronics Hub",
             title = "Samsung Galaxy S24 Ultra 5G (Titanium Gray, 256GB)",
             brand = "Samsung",
             categoryId = "mobiles",
@@ -37,6 +206,7 @@ object InitialDataSeed {
             reviewCount = 4210,
             stock = 45,
             imageUrl = "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80",
+            additionalImages = "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80|https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=600&q=80",
             description = "Experience next-level Galaxy AI with Samsung Galaxy S24 Ultra. Powered by Snapdragon 8 Gen 3 for Galaxy, titanium frame, 200MP Quad Tele camera with 100x Space Zoom, and built-in S Pen.",
             highlights = "12GB RAM | 256GB ROM;6.8 inch Quad HD+ Dynamic AMOLED 2X Display;200MP + 50MP + 12MP + 10MP | 12MP Front Camera;5000 mAh Battery | 45W Fast Charging",
             availableSizes = "256GB,512GB,1TB",
@@ -48,10 +218,13 @@ object InitialDataSeed {
             isDealOfTheDay = true,
             isTrending = true,
             isBestSeller = true,
-            sellerName = "IndiFlash Retail Corp"
+            categorySpecificAttributes = "{\"Processor\":\"Snapdragon 8 Gen 3\",\"RAM\":\"12GB\",\"Screen Size\":\"6.8 inch\",\"5G\":true}"
         ),
         Product(
             id = "prod_mob_02",
+            catalogId = "CAT_MOB_IP15",
+            sellerId = "seller_dkart_direct",
+            sellerName = "DKart Retail Official",
             title = "Apple iPhone 15 (Blue, 128GB)",
             brand = "Apple",
             categoryId = "mobiles",
@@ -64,6 +237,7 @@ object InitialDataSeed {
             reviewCount = 9810,
             stock = 80,
             imageUrl = "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=600&q=80",
+            additionalImages = "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80",
             description = "iPhone 15 brings you Dynamic Island, a 48MP Main camera with 2x Telephoto, durable color-infused glass and aluminum design, and USB-C connectivity.",
             highlights = "128GB ROM;6.1 inch Super Retina XDR Display;48MP + 12MP | 12MP Front Camera;A16 Bionic Chip Processor with 5 Core GPU",
             availableSizes = "128GB,256GB,512GB",
@@ -75,39 +249,13 @@ object InitialDataSeed {
             isDealOfTheDay = true,
             isTrending = true,
             isBestSeller = true,
-            sellerName = "SuperComNet India"
+            categorySpecificAttributes = "{\"Chip\":\"A16 Bionic\",\"Storage\":\"128GB\",\"Display\":\"6.1 inch OLED\"}"
         ),
-        Product(
-            id = "prod_mob_03",
-            title = "Redmi Note 13 Pro+ 5G (Fusion Purple, 256GB)",
-            brand = "Xiaomi",
-            categoryId = "mobiles",
-            subCategory = "5G Smartphones",
-            mrp = 33999.0,
-            price = 27999.0,
-            discountPercent = 17,
-            rating = 4.4f,
-            ratingCount = 34500,
-            reviewCount = 3100,
-            stock = 120,
-            imageUrl = "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80",
-            description = "SuperNote with 200MP OIS Camera, 3D Curved 1.5K 120Hz AMOLED display, IP68 water & dust resistance, and 120W HyperCharge.",
-            highlights = "8GB RAM | 256GB ROM;6.67 inch 1.5K 3D Curved AMOLED;200MP (OIS) + 8MP + 2MP | 16MP Front;MediaTek Dimensity 7200 Ultra Processor;120W HyperCharge in Box",
-            availableSizes = "128GB,256GB",
-            availableColors = "Fusion Purple,Midnight Black,Arctic White",
-            warranty = "1 Year Brand Warranty",
-            returnPolicy = "7 Days Replacement",
-            deliveryDays = 2,
-            isAssured = true,
-            isDealOfTheDay = false,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "FlashTech Online"
-        ),
-
-        // Electronics
         Product(
             id = "prod_elec_01",
+            catalogId = "CAT_ELEC_WH1000",
+            sellerId = "seller_indi_flash",
+            sellerName = "IndiFlash Electronics Hub",
             title = "Sony WH-1000XM5 Wireless Active Noise Cancelling Headphones",
             brand = "Sony",
             categoryId = "electronics",
@@ -120,6 +268,7 @@ object InitialDataSeed {
             reviewCount = 1920,
             stock = 35,
             imageUrl = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+            additionalImages = "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=600&q=80",
             description = "Industry-leading noise cancellation with 8 microphones and Auto NC Optimizer. High-Resolution Audio with LDAC and up to 30 hours of continuous battery life.",
             highlights = "Industry Leading Active Noise Cancellation;Up to 30 Hours Battery Life;Ultra-comfortable lightweight design;Multipoint Bluetooth connection;Touch controls",
             availableSizes = "Standard",
@@ -131,66 +280,13 @@ object InitialDataSeed {
             isDealOfTheDay = true,
             isTrending = true,
             isBestSeller = false,
-            sellerName = "AudioHub Retail"
+            categorySpecificAttributes = "{\"Type\":\"Over Ear Wireless\",\"Battery\":\"30 Hours\",\"ANC\":true}"
         ),
-        Product(
-            id = "prod_elec_02",
-            title = "Apple MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD)",
-            brand = "Apple",
-            categoryId = "electronics",
-            subCategory = "Laptops",
-            mrp = 99900.0,
-            price = 84990.0,
-            discountPercent = 14,
-            rating = 4.8f,
-            ratingCount = 9800,
-            reviewCount = 1100,
-            stock = 25,
-            imageUrl = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80",
-            description = "Strikingly thin design with incredible speed and power efficiency. Liquid Retina display, 1080p FaceTime HD camera, and up to 18 hours battery life.",
-            highlights = "Apple M2 chip with 8-core CPU;13.6 inch Liquid Retina Display with True Tone;18 Hours All-Day Battery;MagSafe 3 charging port;Touch ID sensor",
-            availableSizes = "256GB SSD,512GB SSD",
-            availableColors = "Midnight,Starlight,Space Grey,Silver",
-            warranty = "1 Year International Apple Warranty",
-            returnPolicy = "7 Days Replacement",
-            deliveryDays = 2,
-            isAssured = true,
-            isDealOfTheDay = false,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "UniTech Digital"
-        ),
-        Product(
-            id = "prod_elec_03",
-            title = "Noise ColorFit Pulse 3 Smart Watch with 1.96-inch Display",
-            brand = "Noise",
-            categoryId = "electronics",
-            subCategory = "Wearables",
-            mrp = 4999.0,
-            price = 1499.0,
-            discountPercent = 70,
-            rating = 4.2f,
-            ratingCount = 145000,
-            reviewCount = 12400,
-            stock = 300,
-            imageUrl = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
-            description = "Massive 1.96 inch TFT display with advanced Bluetooth calling, 100+ sports modes, 24/7 heart rate and SpO2 tracking, and IP68 water resistance.",
-            highlights = "1.96 inch HD TFT Display;Single-chip Bluetooth Calling;Auto Sports Detection;Up to 7 Days Battery;150+ Watch Faces",
-            availableSizes = "Standard",
-            availableColors = "Jet Black,Rose Pink,Deep Wine,Silver Grey",
-            warranty = "1 Year Brand Warranty",
-            returnPolicy = "7 Days Replacement",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "GizmoDeals Ltd"
-        ),
-
-        // Men's Fashion
         Product(
             id = "prod_men_01",
+            catalogId = "CAT_FASH_SHIRT",
+            sellerId = "seller_dkart_direct",
+            sellerName = "DKart Retail Official",
             title = "Peter England Men's Slim Fit Formal Cotton Shirt",
             brand = "Peter England",
             categoryId = "fashion_men",
@@ -214,66 +310,13 @@ object InitialDataSeed {
             isDealOfTheDay = false,
             isTrending = true,
             isBestSeller = true,
-            sellerName = "Aditya Fashion Brands"
+            categorySpecificAttributes = "{\"Gender\":\"Men\",\"Fabric\":\"100% Cotton\",\"Fit\":\"Slim Fit\",\"Pattern\":\"Solid\"}"
         ),
-        Product(
-            id = "prod_men_02",
-            title = "Levi's Men's 511 Slim Fit Stretchable Jeans",
-            brand = "Levi's",
-            categoryId = "fashion_men",
-            subCategory = "Jeans",
-            mrp = 3999.0,
-            price = 1899.0,
-            discountPercent = 52,
-            rating = 4.4f,
-            ratingCount = 31200,
-            reviewCount = 2950,
-            stock = 90,
-            imageUrl = "https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=600&q=80",
-            description = "A modern slim with room to move. The 511 Slim Fit Stretch Jeans are a classic since right now, cut close without being too tight.",
-            highlights = "99% Cotton, 1% Elastane;Mid Rise with Zip fly;Stretchable denim fabric;Signature 5-pocket styling",
-            availableSizes = "30,32,34,36,38",
-            availableColors = "Dark Indigo,Light Washed Blue,Charcoal Black",
-            warranty = "100% Original Brand Product",
-            returnPolicy = "10 Days Easy Return & Exchange",
-            deliveryDays = 2,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = false,
-            isBestSeller = true,
-            sellerName = "Apparel Retail Hub"
-        ),
-        Product(
-            id = "prod_men_03",
-            title = "Manyavar Embroidered Silk Blend Festive Kurta Set",
-            brand = "Manyavar",
-            categoryId = "fashion_men",
-            subCategory = "Ethnic Wear",
-            mrp = 4999.0,
-            price = 2499.0,
-            discountPercent = 50,
-            rating = 4.6f,
-            ratingCount = 12400,
-            reviewCount = 980,
-            stock = 60,
-            imageUrl = "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80",
-            description = "Celebrate weddings and Indian festivals with Manyavar's royal silk blend mandarin collar kurta set paired with churidar pyjama.",
-            highlights = "Art Silk Blend Fabric;Mandarin Collar with intricate embroidery;Full length sleeves;Includes Churidar pants",
-            availableSizes = "S (36),M (38),L (40),XL (42),XXL (44)",
-            availableColors = "Royal Mustard,Emerald Green,Maroon,Cream Gold",
-            warranty = "Quality Inspected",
-            returnPolicy = "7 Days Easy Exchange",
-            deliveryDays = 3,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = true,
-            isBestSeller = false,
-            sellerName = "Heritage Ethnic World"
-        ),
-
-        // Women's Fashion
         Product(
             id = "prod_wom_01",
+            catalogId = "CAT_FASH_SAREE",
+            sellerId = "seller_saree_kendra",
+            sellerName = "Saree Kendra Surat",
             title = "Siril Kanjivaram Woven Pure Soft Silk Saree with Blouse Piece",
             brand = "Siril",
             categoryId = "fashion_women",
@@ -289,7 +332,7 @@ object InitialDataSeed {
             description = "Drape in timeless traditional beauty with this opulent Kanjivaram style woven jacquard border silk saree, accompanied by unstitched matching blouse piece.",
             highlights = "Kanjivaram Art Silk;Rich Zari Woven Pallu & Border;Saree length: 5.5m | Blouse: 0.8m;Dry clean only",
             availableSizes = "Free Size",
-            availableColors = "Peacock Blue & Gold,Ruby Red,Emerald Green,Deep Purple",
+            availableColors = "Peacock Blue & Gold,Ruby Red,Emerald Green",
             warranty = "Brand Certified",
             returnPolicy = "10 Days Return & Refund",
             deliveryDays = 2,
@@ -297,180 +340,13 @@ object InitialDataSeed {
             isDealOfTheDay = true,
             isTrending = true,
             isBestSeller = true,
-            sellerName = "Saree Kendra Surat"
+            categorySpecificAttributes = "{\"Material\":\"Pure Art Silk\",\"Occasion\":\"Festive & Wedding\",\"Weave\":\"Kanjivaram Jacquard\"}"
         ),
-        Product(
-            id = "prod_wom_02",
-            title = "Biba Printed Anarkali Kurta with Palazzo & Dupatta Set",
-            brand = "Biba",
-            categoryId = "fashion_women",
-            subCategory = "Kurta Sets",
-            mrp = 3999.0,
-            price = 1799.0,
-            discountPercent = 55,
-            rating = 4.5f,
-            ratingCount = 18900,
-            reviewCount = 1750,
-            stock = 75,
-            imageUrl = "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
-            description = "Flattering tiered Anarkali silhouette in soft floral printed cambric cotton with golden gota patti accents and matching chiffon dupatta.",
-            highlights = "100% Pure Cambric Cotton;Calf-length flared Anarkali;Round neck with keyhole;Matching palazzo pants",
-            availableSizes = "XS,S,M,L,XL,XXL",
-            availableColors = "Teal Floral,Coral Pink,Sunshine Yellow",
-            warranty = "Authentic Brand Product",
-            returnPolicy = "10 Days Easy Return",
-            deliveryDays = 2,
-            isAssured = true,
-            isDealOfTheDay = false,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "Ethnic Elegance Retail"
-        ),
-
-        // Home & Kitchen
-        Product(
-            id = "prod_home_01",
-            title = "Prestige Iris 750 Watt Mixer Grinder with 4 Jars",
-            brand = "Prestige",
-            categoryId = "home_kitchen",
-            subCategory = "Kitchen Appliances",
-            mrp = 4495.0,
-            price = 2899.0,
-            discountPercent = 35,
-            rating = 4.3f,
-            ratingCount = 89000,
-            reviewCount = 7600,
-            stock = 110,
-            imageUrl = "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80",
-            description = "Powerful 750W copper motor with 3 stainless steel multipurpose jars and 1 transparent juicer jar with blade for juices and shakes.",
-            highlights = "750 Watt Heavy Duty Motor;3 Stainless Steel Jars + 1 Polycarbonate Juicer Jar;Overload protection switch;3 Speed control with whip",
-            availableSizes = "4 Jars (750W)",
-            availableColors = "White & Blue,Glossy Black",
-            warranty = "2 Years Manufacturer Warranty",
-            returnPolicy = "7 Days Replacement",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = false,
-            isBestSeller = true,
-            sellerName = "HomeAppliances Direct"
-        ),
-        Product(
-            id = "prod_home_02",
-            title = "Milton Thermosteel Flip Lid Vacuum Insulated Flask (1000 ml)",
-            brand = "Milton",
-            categoryId = "home_kitchen",
-            subCategory = "Cookware & Bottles",
-            mrp = 1290.0,
-            price = 849.0,
-            discountPercent = 34,
-            rating = 4.6f,
-            ratingCount = 54000,
-            reviewCount = 4300,
-            stock = 200,
-            imageUrl = "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80",
-            description = "Double walled vacuum insulated stainless steel water bottle. Keeps hot beverages steaming hot and cold drinks chilled for up to 24 hours.",
-            highlights = "1000ml Capacity;18/8 Quality Stainless Steel;24 Hours Hot & Cold retention;100% Leak proof flip lid",
-            availableSizes = "500ml,750ml,1000ml",
-            availableColors = "Brushed Silver,Matte Black,Midnight Blue",
-            warranty = "1 Year Brand Warranty",
-            returnPolicy = "7 Days Replacement",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = false,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "Milton Official Online"
-        ),
-
-        // Grocery & Everyday Essentials
-        Product(
-            id = "prod_groc_01",
-            title = "Fortune Sunlite Refined Sunflower Oil Pouch (1 L)",
-            brand = "Fortune",
-            categoryId = "grocery",
-            subCategory = "Edible Oils",
-            mrp = 165.0,
-            price = 129.0,
-            discountPercent = 21,
-            rating = 4.5f,
-            ratingCount = 112000,
-            reviewCount = 6700,
-            stock = 450,
-            imageUrl = "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80",
-            description = "Enriched with Vitamins A and D. Light and healthy cooking oil that retains the natural flavors of traditional Indian cooking.",
-            highlights = "100% Pure Refined Sunflower Oil;Fortified with Vitamin A & D;Low absorption technology;Heart healthy cholesterol-free",
-            availableSizes = "1 Litre,5 Litre Can",
-            availableColors = "Standard",
-            warranty = "100% Fresh & Authentic",
-            returnPolicy = "Instant Return at Delivery",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = false,
-            isBestSeller = true,
-            sellerName = "Bharat SuperMart"
-        ),
-        Product(
-            id = "prod_groc_02",
-            title = "Tata Tea Gold Royal Taste & Aroma (1 kg)",
-            brand = "Tata Tea",
-            categoryId = "grocery",
-            subCategory = "Beverages",
-            mrp = 640.0,
-            price = 485.0,
-            discountPercent = 24,
-            rating = 4.6f,
-            ratingCount = 89000,
-            reviewCount = 5400,
-            stock = 320,
-            imageUrl = "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
-            description = "A delicate blend of fine Assam CTC tea leaves gently rolled with long leaves to deliver an unforgettable aroma and rich taste.",
-            highlights = "15% Long Leaves blended with Assam CTC;Rich golden liquor;Refreshing rich aroma;100% Vegetarian",
-            availableSizes = "500g,1kg",
-            availableColors = "Standard",
-            warranty = "Original Sealed Packaging",
-            returnPolicy = "Replacement if damaged",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = false,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "Bharat SuperMart"
-        ),
-
-        // Beauty & Personal Care
-        Product(
-            id = "prod_beau_01",
-            title = "Minimalist 10% Niacinamide Face Serum with Zinc (30 ml)",
-            brand = "Minimalist",
-            categoryId = "beauty",
-            subCategory = "Skin Care",
-            mrp = 599.0,
-            price = 549.0,
-            discountPercent = 8,
-            rating = 4.5f,
-            ratingCount = 68000,
-            reviewCount = 5900,
-            stock = 180,
-            imageUrl = "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
-            description = "Nourishing, daily serum packed with pure Vitamin B3 (Niacinamide) and Matmarine to remove blemishes, acne scars, and regulate sebum.",
-            highlights = "10% Niacinamide + 1% Zinc;Reduces acne marks and dark spots;Fragrance-free and non-comedogenic;Suitable for all skin types",
-            availableSizes = "30ml,50ml",
-            availableColors = "Standard",
-            warranty = "Dermatologically Tested",
-            returnPolicy = "Non-Returnable (Hygiene Product)",
-            deliveryDays = 1,
-            isAssured = true,
-            isDealOfTheDay = true,
-            isTrending = true,
-            isBestSeller = true,
-            sellerName = "GlowCare Cosmetics"
-        ),
-
-        // Footwear
         Product(
             id = "prod_foot_01",
+            catalogId = "CAT_FOOT_PUMA",
+            sellerId = "seller_dkart_direct",
+            sellerName = "DKart Retail Official",
             title = "Puma Men's Softride Pro Lightweight Running Shoes",
             brand = "Puma",
             categoryId = "footwear",
@@ -485,7 +361,7 @@ object InitialDataSeed {
             imageUrl = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
             description = "Engineered with Puma Softride foam cushioning technology for all-day cloud-like comfort and breathable mesh upper for runners.",
             highlights = "Softride foam cushioning;Zoned rubber traction outsole;Lace-up closure;Breathable knit mesh upper",
-            availableSizes = "UK 6,UK 7,UK 8,UK 9,UK 10,UK 11",
+            availableSizes = "UK 7,UK 8,UK 9,UK 10,UK 11",
             availableColors = "Black & White,Electric Blue,Triple Black",
             warranty = "3 Months Puma Warranty against manufacturing defects",
             returnPolicy = "10 Days Easy Return & Exchange",
@@ -494,43 +370,15 @@ object InitialDataSeed {
             isDealOfTheDay = true,
             isTrending = true,
             isBestSeller = true,
-            sellerName = "SportStyle India"
+            categorySpecificAttributes = "{\"Shoe Type\":\"Running\",\"Sole\":\"Softride Rubber\",\"Closure\":\"Lace-Up\"}"
         )
     )
 
     val coupons = listOf(
-        Coupon(
-            code = "BHARAT500",
-            description = "Get ₹500 instant discount on orders above ₹2,499",
-            discountType = "FLAT",
-            discountValue = 500.0,
-            minOrderValue = 2499.0,
-            maxDiscount = 500.0
-        ),
-        Coupon(
-            code = "WELCOME10",
-            description = "10% Instant Discount on your first order (Up to ₹300)",
-            discountType = "PERCENT",
-            discountValue = 10.0,
-            minOrderValue = 499.0,
-            maxDiscount = 300.0
-        ),
-        Coupon(
-            code = "FESTIVE20",
-            description = "20% Festive Dhamaka Discount on orders above ₹1,499 (Up to ₹1,000)",
-            discountType = "PERCENT",
-            discountValue = 20.0,
-            minOrderValue = 1499.0,
-            maxDiscount = 1000.0
-        ),
-        Coupon(
-            code = "FREEDELIVERY",
-            description = "100% Free Express Delivery on orders above ₹499",
-            discountType = "FLAT",
-            discountValue = 40.0,
-            minOrderValue = 499.0,
-            maxDiscount = 40.0
-        )
+        Coupon("DKART500", "Get ₹500 instant discount on orders above ₹2,499", "FLAT", 500.0, 2499.0, 500.0),
+        Coupon("WELCOME10", "10% Instant Discount on your first order (Up to ₹300)", "PERCENT", 10.0, 499.0, 300.0),
+        Coupon("FESTIVE20", "20% Festive Dhamaka Discount on orders above ₹1,499 (Up to ₹1,000)", "PERCENT", 20.0, 1499.0, 1000.0),
+        Coupon("FREEDELIVERY", "100% Free Express Delivery on orders above ₹499", "FLAT", 40.0, 499.0, 40.0)
     )
 
     val defaultAddresses = listOf(
@@ -544,17 +392,6 @@ object InitialDataSeed {
             state = "Maharashtra",
             addressType = "HOME",
             isDefault = true
-        ),
-        Address(
-            id = 2,
-            fullName = "Amanullah Shaikh (Office)",
-            phoneNumber = "9876543210",
-            pincode = "110001",
-            addressLine = "Tower B, 6th Floor, Cyber City",
-            city = "New Delhi",
-            state = "Delhi",
-            addressType = "WORK",
-            isDefault = false
         )
     )
 
@@ -564,17 +401,8 @@ object InitialDataSeed {
             userName = "Vikram Sharma",
             rating = 5,
             headline = "Absolute Beast of a Phone! Galaxy AI is magic",
-            comment = "Upgraded from S21 Ultra and the difference is massive. The flat screen and anti-reflective glass are pure luxury. Battery lasts 1.5 days easily. Delivered in 24 hours by BharatBazaar!",
+            comment = "Upgraded from S21 Ultra and the difference is massive. Delivered in 24 hours by DKart Assured!",
             dateText = "12 Oct 2026",
-            isVerified = true
-        ),
-        Review(
-            productId = "prod_mob_01",
-            userName = "Pooja Hegde",
-            rating = 5,
-            headline = "Camera zoom is unbelievable",
-            comment = "Took moon shots and concert videos, clarity is unmatched. BharatBazaar Assured delivery was on time with secure OTP verification.",
-            dateText = "08 Oct 2026",
             isVerified = true
         ),
         Review(
@@ -584,15 +412,6 @@ object InitialDataSeed {
             headline = "Best ANC Headphones in the market",
             comment = "Mutes flight and AC noise instantly. Soundstage is so clear and mic quality during office Zoom calls is crystal clear.",
             dateText = "01 Oct 2026",
-            isVerified = true
-        ),
-        Review(
-            productId = "prod_foot_01",
-            userName = "Sameer Akhtar",
-            rating = 4,
-            headline = "Very comfortable for morning jogs",
-            comment = "Lightweight, soft sole, good grip. Size 9 fits true to standard. Got 56% discount during festive sale!",
-            dateText = "05 Oct 2026",
             isVerified = true
         )
     )

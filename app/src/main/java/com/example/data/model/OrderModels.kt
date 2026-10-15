@@ -40,6 +40,8 @@ data class OrderItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val orderId: String,
     val productId: String,
+    val sellerId: String = "seller_dkart_direct",
+    val sellerName: String = "DKart Retail Official",
     val title: String,
     val brand: String,
     val imageUrl: String,

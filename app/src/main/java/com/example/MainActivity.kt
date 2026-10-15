@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.data.local.BharatBazaarDatabase
+import com.example.data.local.DKartDatabase
 import com.example.data.repository.BharatBazaarRepository
 import com.example.ui.components.BottomNavBar
 import com.example.ui.components.PincodeBottomSheet
@@ -29,15 +28,18 @@ import com.example.ui.components.TopSearchBar
 import com.example.ui.screens.AccountScreen
 import com.example.ui.screens.AdminDashboardScreen
 import com.example.ui.screens.CartScreen
+import com.example.ui.screens.CatalogSelectionScreen
+import com.example.ui.screens.CategoryProductFormScreen
 import com.example.ui.screens.CategoriesScreen
 import com.example.ui.screens.CheckoutScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.OrderTrackingScreen
 import com.example.ui.screens.ProductDetailScreen
 import com.example.ui.screens.ProductListScreen
+import com.example.ui.screens.SellerDashboardScreen
+import com.example.ui.screens.SellerRegistrationScreen
 import com.example.ui.screens.WishlistScreen
-import com.example.ui.theme.BharatBazaarTheme
-import com.example.ui.theme.FlipkartBlue
+import com.example.ui.theme.DKartTheme
 import com.example.ui.viewmodel.Screen
 import com.example.ui.viewmodel.ShopViewModel
 
@@ -47,12 +49,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val db = BharatBazaarDatabase.getInstance(applicationContext)
+        val db = DKartDatabase.getInstance(applicationContext)
         val repository = BharatBazaarRepository(db)
         val viewModel = ShopViewModel(repository)
 
         setContent {
-            BharatBazaarTheme {
+            DKartTheme {
                 MainAppScaffold(viewModel = viewModel)
             }
         }
@@ -68,6 +70,7 @@ fun MainAppScaffold(viewModel: ShopViewModel) {
     val searchQuery by viewModel.searchQuery.collectAsState()
     val showPincodeDialog by viewModel.showPincodeDialog.collectAsState()
     val pincodeCheckResult by viewModel.pincodeCheckResult.collectAsState()
+    val currentLanguage by viewModel.currentLanguage.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -83,6 +86,11 @@ fun MainAppScaffold(viewModel: ShopViewModel) {
             currentScreen is Screen.Cart ||
             currentScreen is Screen.Account
 
+    // Global back handling for secondary screens
+    BackHandler(enabled = !isTopTabScreen) {
+        viewModel.navigateBack()
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -94,6 +102,8 @@ fun MainAppScaffold(viewModel: ShopViewModel) {
                         activePincode = activePincode,
                         searchQuery = searchQuery,
                         cartCount = cartCount,
+                        currentLanguage = currentLanguage,
+                        onLanguageChange = { viewModel.setLanguage(it) },
                         onPincodeClick = { viewModel.setShowPincodeDialog(true) },
                         onQueryChange = { viewModel.updateSearchQuery(it) },
                         onSearchSubmit = { query ->
@@ -102,6 +112,7 @@ fun MainAppScaffold(viewModel: ShopViewModel) {
                             }
                         },
                         onCartClick = { viewModel.navigateToTab(Screen.Cart) },
+                        onSellerHubClick = { viewModel.navigateTo(Screen.SellerDashboard) },
                         onAdminClick = { viewModel.navigateTo(Screen.AdminDashboard) }
                     )
                 }
@@ -146,6 +157,17 @@ fun MainAppScaffold(viewModel: ShopViewModel) {
                     viewModel = viewModel
                 )
                 is Screen.AdminDashboard -> AdminDashboardScreen(viewModel = viewModel)
+                is Screen.SellerDashboard -> SellerDashboardScreen(viewModel = viewModel)
+                is Screen.SellerRegistration -> SellerRegistrationScreen(viewModel = viewModel)
+                is Screen.CatalogSelection -> CatalogSelectionScreen(
+                    seller = screen.seller,
+                    viewModel = viewModel
+                )
+                is Screen.CategoryProductForm -> CategoryProductFormScreen(
+                    catalogItem = screen.catalogItem,
+                    seller = screen.seller,
+                    viewModel = viewModel
+                )
             }
         }
     }

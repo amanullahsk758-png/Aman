@@ -1,6 +1,6 @@
 {
-  "name": "BharatBazaar",
-  "description": "Complete Flipkart-style Indian e-commerce shopping app with category exploration, deals of the day, instant PIN code delivery check, rich cart & wishlist, order tracking, and admin dashboard.",
+  "name": "DKart",
+  "description": "Multi-vendor Indian e-commerce marketplace connecting customers, sellers, and administrators with catalog-based product listings, order management, and multi-language support.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

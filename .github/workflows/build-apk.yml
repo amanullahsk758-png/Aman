@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build DKart Android APK
 
 on:
   push:
@@ -7,9 +7,12 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    name: Build & Export APK
+    name: Build & Release DKart APK
     runs-on: ubuntu-latest
 
     steps:
@@ -27,16 +30,14 @@ jobs:
 
       - name: Prepare Environment & Secrets
         run: |
-          # Ensure .env exists for the Secrets Gradle Plugin
           if [ ! -f .env ]; then
             cp .env.example .env 2>/dev/null || touch .env
           fi
 
-          # Prepare debug keystore
           if [ -f debug.keystore.base64 ]; then
             base64 -d debug.keystore.base64 > debug.keystore
           else
-            keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=DKart Debug,O=DKart,C=IN"
           fi
 
       - name: Make Gradle Wrapper Executable
@@ -45,17 +46,44 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
+      - name: Rename and Organize APK
+        run: |
+          mkdir -p release-apk
+          cp app/build/outputs/apk/debug/*.apk release-apk/DKart-Marketplace.apk
+
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BharatBazaar-Debug-APK
-          path: app/build/outputs/apk/debug/*.apk
+          name: DKart-Marketplace-APK
+          path: release-apk/DKart-Marketplace.apk
           retention-days: 30
+
+      - name: Create GitHub Release with Direct APK Download
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: "DKart Marketplace APK v1.0.0"
+          body: |
+            ### 🛒 DKart Multi-Vendor E-Commerce Marketplace APK
+            Direct download link for your mobile device:
+            - **App Name**: DKart
+            - **Package**: `com.aistudio.bharatbazaar.qkmpvz`
+            - **Platform**: Android 7.0+ (API 24 to 36)
+            
+            **Direct Download**: Download `DKart-Marketplace.apk` below directly to your phone and install!
+          files: release-apk/DKart-Marketplace.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Summary
         run: |
-          echo "### 🚀 Build Successful!" >> $GITHUB_STEP_SUMMARY
-          echo "The **BharatBazaar APK** has been compiled and is available in the **Artifacts** section above." >> $GITHUB_STEP_SUMMARY
-          echo "- **Target Device**: Android 7.0+ (API 24 to 36)" >> $GITHUB_STEP_SUMMARY
-          echo "- **App Name**: BharatBazaar" >> $GITHUB_STEP_SUMMARY
-          echo "- **Package ID**: com.aistudio.bharatbazaar.qkmpvz" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 DKart APK Build Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "Your **DKart Marketplace APK** is ready to download and install on your mobile device." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### 📲 How to Download & Install:" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Method 1 (Direct Release)**: Go to the GitHub repository homepage and check the **Releases** tab on the right side." >> $GITHUB_STEP_SUMMARY
+          echo "2. **Method 2 (Artifacts)**: Click on the **Actions** tab -> select this run -> scroll down to **Artifacts** -> click **DKart-Marketplace-APK** to download." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **App**: DKart Multi-Vendor Marketplace" >> $GITHUB_STEP_SUMMARY
+          echo "- **File**: DKart-Marketplace.apk" >> $GITHUB_STEP_SUMMARY

@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "BharatBazaar"
+rootProject.name = "DKart"
 
 include(":app")

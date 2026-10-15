@@ -10,6 +10,7 @@ import androidx.room.Update
 import com.example.data.model.Address
 import com.example.data.model.CartItem
 import com.example.data.model.CartItemWithProduct
+import com.example.data.model.CatalogItem
 import com.example.data.model.Category
 import com.example.data.model.Coupon
 import com.example.data.model.OrderEntity
@@ -17,6 +18,7 @@ import com.example.data.model.OrderItemEntity
 import com.example.data.model.OrderWithItems
 import com.example.data.model.Product
 import com.example.data.model.Review
+import com.example.data.model.Seller
 import com.example.data.model.WishlistItem
 import com.example.data.model.WishlistItemWithProduct
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +43,12 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE id = :id LIMIT 1")
     fun getProductById(id: String): Flow<Product?>
 
+    @Query("SELECT * FROM products WHERE sellerId = :sellerId ORDER BY id DESC")
+    fun getProductsBySeller(sellerId: String): Flow<List<Product>>
+
+    @Query("SELECT * FROM products WHERE catalogId = :catalogId")
+    fun getOffersForCatalogItem(catalogId: String): Flow<List<Product>>
+
     @Query("SELECT * FROM products WHERE title LIKE '%' || :query || '%' OR brand LIKE '%' || :query || '%' OR subCategory LIKE '%' || :query || '%'")
     fun searchProducts(query: String): Flow<List<Product>>
 
@@ -61,6 +69,48 @@ interface ProductDao {
 
     @Query("SELECT COUNT(*) FROM products")
     suspend fun getProductCount(): Int
+}
+
+@Dao
+interface CatalogDao {
+    @Query("SELECT * FROM catalog_items ORDER BY id ASC")
+    fun getAllCatalogItems(): Flow<List<CatalogItem>>
+
+    @Query("SELECT * FROM catalog_items WHERE title LIKE '%' || :query || '%' OR brand LIKE '%' || :query || '%' OR modelNumber LIKE '%' || :query || '%' OR gtin LIKE '%' || :query || '%'")
+    fun searchCatalog(query: String): Flow<List<CatalogItem>>
+
+    @Query("SELECT * FROM catalog_items WHERE id = :id LIMIT 1")
+    fun getCatalogItemById(id: String): Flow<CatalogItem?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCatalogItems(items: List<CatalogItem>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCatalogItem(item: CatalogItem)
+
+    @Query("SELECT COUNT(*) FROM catalog_items")
+    suspend fun getCatalogCount(): Int
+}
+
+@Dao
+interface SellerDao {
+    @Query("SELECT * FROM sellers ORDER BY joinedAt DESC")
+    fun getAllSellers(): Flow<List<Seller>>
+
+    @Query("SELECT * FROM sellers WHERE id = :id LIMIT 1")
+    fun getSellerById(id: String): Flow<Seller?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSeller(seller: Seller)
+
+    @Query("UPDATE sellers SET status = :status WHERE id = :id")
+    suspend fun updateSellerStatus(id: String, status: String)
+
+    @Query("UPDATE sellers SET commissionPercent = :commission WHERE id = :id")
+    suspend fun updateSellerCommission(id: String, commission: Double)
+
+    @Query("SELECT COUNT(*) FROM sellers")
+    suspend fun getSellerCount(): Int
 }
 
 @Dao
@@ -125,6 +175,9 @@ interface OrderDao {
     @Transaction
     @Query("SELECT * FROM orders WHERE orderId = :orderId LIMIT 1")
     fun getOrderById(orderId: String): Flow<OrderWithItems?>
+
+    @Query("SELECT * FROM order_items WHERE sellerId = :sellerId ORDER BY id DESC")
+    fun getOrderItemsForSeller(sellerId: String): Flow<List<OrderItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(order: OrderEntity)

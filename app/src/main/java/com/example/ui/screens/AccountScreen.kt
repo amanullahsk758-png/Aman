@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -48,10 +49,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.components.formatInr
 import com.example.ui.theme.BackgroundNeutral
-import com.example.ui.theme.FlipkartBlue
-import com.example.ui.theme.FlipkartDarkBlue
-import com.example.ui.theme.FlipkartGreen
-import com.example.ui.theme.FlipkartYellow
+import com.example.ui.theme.DKartBlue
+import com.example.ui.theme.DKartDarkBlue
+import com.example.ui.theme.DKartGreen
+import com.example.ui.theme.DKartYellow
 import com.example.ui.theme.TextPrimary
 import com.example.ui.theme.TextSecondary
 import com.example.ui.viewmodel.Screen
@@ -67,6 +68,7 @@ fun AccountScreen(
 ) {
     val orders by viewModel.orders.collectAsState()
     val wishlistCount by viewModel.wishlistCount.collectAsState()
+    val currentSeller by viewModel.currentSeller.collectAsState()
 
     LazyColumn(
         modifier = modifier
@@ -79,7 +81,7 @@ fun AccountScreen(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = FlipkartBlue),
+                colors = CardDefaults.cardColors(containerColor = DKartBlue),
                 shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
             ) {
                 Column(
@@ -101,7 +103,7 @@ fun AccountScreen(
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
-                                tint = FlipkartBlue,
+                                tint = DKartBlue,
                                 modifier = Modifier.size(36.dp)
                             )
                         }
@@ -111,7 +113,7 @@ fun AccountScreen(
                         Column {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "Amanullah Shaikh",
+                                    text = "Amanullah Sk",
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
@@ -119,12 +121,12 @@ fun AccountScreen(
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Box(
                                     modifier = Modifier
-                                        .background(FlipkartDarkBlue, RoundedCornerShape(4.dp))
+                                        .background(DKartDarkBlue, RoundedCornerShape(4.dp))
                                         .padding(horizontal = 6.dp, vertical = 2.dp)
-                                ) {
+                                 ) {
                                     Text(
-                                        text = "Plus ✦",
-                                        color = FlipkartYellow,
+                                        text = "DKart Plus ✦",
+                                        color = DKartYellow,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -141,27 +143,27 @@ fun AccountScreen(
 
                     Spacer(modifier = Modifier.height(14.dp))
 
-                    // SuperCoins Banner
+                    // DKart Coins Banner
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(FlipkartDarkBlue.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                            .background(DKartDarkBlue.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Star, contentDescription = null, tint = FlipkartYellow, modifier = Modifier.size(18.dp))
+                            Icon(Icons.Default.Star, contentDescription = null, tint = DKartYellow, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Bharat Coins Balance: 240", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                            Text("DKart SuperCoins: 350", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                         }
-                        Text("Use Coins for Extra 10% Off", color = FlipkartYellow, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                        Text("Use Coins for Extra 10% Off", color = DKartYellow, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }
         }
 
-        // 2. Quick Action Grid (Orders, Wishlist, Coupons, Admin)
+        // 2. Quick Action Grid (Orders, Wishlist, Pincode, Seller Hub)
         item {
             Spacer(modifier = Modifier.height(10.dp))
             Card(
@@ -204,9 +206,31 @@ fun AccountScreen(
                                 .background(Color(0xFFE8F5E9)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = FlipkartGreen, modifier = Modifier.size(22.dp))
+                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = DKartGreen, modifier = Modifier.size(22.dp))
                         }
                         Text("Delivery PIN", fontSize = 11.sp, fontWeight = FontWeight.Medium, modifier = Modifier.padding(top = 4.dp))
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable {
+                            if (currentSeller != null) {
+                                viewModel.navigateTo(Screen.SellerDashboard)
+                            } else {
+                                viewModel.navigateTo(Screen.SellerRegistration)
+                            }
+                        }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFFFF8E1)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Storefront, contentDescription = null, tint = Color(0xFFF57F17), modifier = Modifier.size(22.dp))
+                        }
+                        Text("Seller Hub", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF57F17), modifier = Modifier.padding(top = 4.dp))
                     }
 
                     Column(
@@ -220,23 +244,29 @@ fun AccountScreen(
                                 .background(Color(0xFFE3F2FD)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Default.AdminPanelSettings, contentDescription = null, tint = FlipkartBlue, modifier = Modifier.size(22.dp))
+                            Icon(Icons.Default.AdminPanelSettings, contentDescription = null, tint = DKartBlue, modifier = Modifier.size(22.dp))
                         }
-                        Text("Admin Panel", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = FlipkartBlue, modifier = Modifier.padding(top = 4.dp))
+                        Text("Admin Panel", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = DKartBlue, modifier = Modifier.padding(top = 4.dp))
                     }
                 }
             }
         }
 
-        // 3. Admin Switcher Banner
+        // 3. Seller Hub Banner
         item {
             Spacer(modifier = Modifier.height(10.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
-                    .clickable { viewModel.navigateTo(Screen.AdminDashboard) },
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E3A8A)),
+                    .clickable {
+                        if (currentSeller != null) {
+                            viewModel.navigateTo(Screen.SellerDashboard)
+                        } else {
+                            viewModel.navigateTo(Screen.SellerRegistration)
+                        }
+                    },
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF003B95)),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Row(
@@ -247,11 +277,11 @@ fun AccountScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.AdminPanelSettings, contentDescription = null, tint = FlipkartYellow, modifier = Modifier.size(24.dp))
+                        Icon(Icons.Default.Storefront, contentDescription = null, tint = DKartYellow, modifier = Modifier.size(26.dp))
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
-                            Text("ADMIN DASHBOARD & CATALOG", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                            Text("Manage products, inventory, orders & sales", color = Color.White.copy(alpha = 0.8f), fontSize = 11.sp)
+                            Text("DKART SELLER ONBOARDING & HUB", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Text("Sell to millions • 0% listing fee • Fast catalog matching", color = Color.White.copy(alpha = 0.85f), fontSize = 11.sp)
                         }
                     }
                     Icon(Icons.Default.ArrowForward, contentDescription = null, tint = Color.White)
@@ -259,7 +289,38 @@ fun AccountScreen(
             }
         }
 
-        // 4. Order History
+        // 4. Admin Switcher Banner
+        item {
+            Spacer(modifier = Modifier.height(8.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .clickable { viewModel.navigateTo(Screen.AdminDashboard) },
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(14.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.AdminPanelSettings, contentDescription = null, tint = DKartYellow, modifier = Modifier.size(24.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("DKART MARKETPLACE ADMIN CONSOLE", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Text("Manage sellers, catalog database, commissions & orders", color = Color.White.copy(alpha = 0.8f), fontSize = 11.sp)
+                        }
+                    }
+                    Icon(Icons.Default.ArrowForward, contentDescription = null, tint = Color.White)
+                }
+            }
+        }
+
+        // 5. Order History
         item {
             Spacer(modifier = Modifier.height(14.dp))
             Row(
@@ -321,7 +382,7 @@ fun AccountScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "Order ID: ${ord.orderId}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = FlipkartBlue)
+                            Text(text = "Order ID: ${ord.orderId}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = DKartBlue)
                             Box(
                                 modifier = Modifier
                                     .background(
@@ -334,7 +395,7 @@ fun AccountScreen(
                                     text = ord.status,
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = if (ord.status == "DELIVERED") FlipkartGreen else FlipkartBlue
+                                    color = if (ord.status == "DELIVERED") DKartGreen else DKartBlue
                                 )
                             }
                         }
@@ -357,8 +418,8 @@ fun AccountScreen(
                         ) {
                             Text(text = "Total: ${formatInr(ord.totalAmount)}", fontWeight = FontWeight.Black, fontSize = 14.sp)
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("Track Delivery", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = FlipkartBlue)
-                                Icon(Icons.Default.ArrowForward, contentDescription = null, tint = FlipkartBlue, modifier = Modifier.size(14.dp))
+                                Text("Track Delivery", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = DKartBlue)
+                                Icon(Icons.Default.ArrowForward, contentDescription = null, tint = DKartBlue, modifier = Modifier.size(14.dp))
                             }
                         }
                     }
@@ -366,7 +427,7 @@ fun AccountScreen(
             }
         }
 
-        // 5. Customer Care & FAQs
+        // 6. Customer Care & FAQs
         item {
             Spacer(modifier = Modifier.height(14.dp))
             Card(
@@ -383,6 +444,7 @@ fun AccountScreen(
                     listOf(
                         "24x7 Customer Support & Help Centre",
                         "Returns, Refunds & Cancellation Policy",
+                        "DKart Seller Marketplace Policies",
                         "Terms and Conditions of Use",
                         "Privacy Policy & Security"
                     ).forEach { settingTitle ->

@@ -47,6 +47,7 @@ import com.example.ui.components.BannerCarousel
 import com.example.ui.components.CategoryBubble
 import com.example.ui.components.VerticalProductCard
 import com.example.ui.theme.BackgroundNeutral
+import com.example.ui.theme.DKartBlue
 import com.example.ui.theme.FlipkartBlue
 import com.example.ui.theme.FlipkartDarkBlue
 import com.example.ui.theme.FlipkartGreen
@@ -425,7 +426,7 @@ fun HomeScreen(
                         Text(text = "Instant Doorstep Pickup", fontSize = 9.sp, color = TextSecondary)
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "⚡ Bharat Assured", fontWeight = FontWeight.Bold, fontSize = 11.sp, color = FlipkartBlue)
+                        Text(text = "⚡ DKart Assured", fontWeight = FontWeight.Bold, fontSize = 11.sp, color = DKartBlue)
                         Text(text = "Fast & Safe Delivery", fontSize = 9.sp, color = TextSecondary)
                     }
                 }

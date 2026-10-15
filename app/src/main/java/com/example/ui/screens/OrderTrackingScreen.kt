@@ -168,7 +168,7 @@ fun OrderTrackingScreen(
                             val statusSteps = listOf(
                                 "CONFIRMED" to "Order Confirmed",
                                 "PACKED" to "Packed & Ready",
-                                "SHIPPED" to "Shipped via Bharat Express",
+                                "SHIPPED" to "Shipped via DKart Express",
                                 "OUT_FOR_DELIVERY" to "Out for Delivery",
                                 "DELIVERED" to "Delivered to Customer"
                             )
